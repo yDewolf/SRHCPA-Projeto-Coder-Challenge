@@ -1,3 +1,6 @@
 Salve galerinha do youtube
 Hoje a gente vai estar fazendo uma gameplay avan�adissima
 de python !!!
+
+Mas Davi eu não entendo python, então vem com os cascas
+que a  gente te ensina

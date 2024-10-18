@@ -1,5 +1,6 @@
 # CSV file reader
 import FileReader
+from ShipRegister import ShipRegister
 
 # Should create functions:
 # - load csv files (parse data before returning),
@@ -46,3 +47,11 @@ def get_csv_values_with_key(file_path: str, header: list[str] = [], main_key: st
         indexed_csv[main_key_value] = filtered_dict
 
     return indexed_csv
+
+
+# Converter os valores das chaves para string
+# Separar os valores por vírgula
+def dict_to_csv(dictionary: dict) -> str:
+
+    for key in dictionary:
+        str(key)
