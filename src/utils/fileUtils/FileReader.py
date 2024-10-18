@@ -27,3 +27,11 @@ def get_file_lines(file_path: str) -> list:
             lines.append(line.replace("\n", ""))
     
     return lines
+
+# Custom parsing function to properly assign types from strings
+def parse_string_value(value: str):
+    pass
+
+# Custom stringifying function to properly format values to string
+def stringify_value(value):
+    pass
