@@ -28,7 +28,6 @@ def get_csv_rows(file_path: str, header: list[str] = [], separator: str = ",") -
     
     return csv_rows
 
-
 def get_csv_values_with_key(file_path: str, header: list[str] = [], main_key: str = "", separator: str = ",") -> dict:
     raw_values = get_csv_rows(file_path, header, separator)
     if main_key == "":
@@ -37,16 +36,17 @@ def get_csv_values_with_key(file_path: str, header: list[str] = [], main_key: st
     indexed_csv = {}
 
     for row_dict in raw_values:
-        filtered_dict = {}
+        main_key_value = row_dict[main_key]
+        filtered_dict = row_dict.pop(main_key)
 
-        for key in row_dict:
-            # Skip main key
-            if key == main_key:
-                continue
+        # for key in row_dict:
+        #     # Skip main key
+        #     if key == main_key:
+        #         continue
             
-            filtered_dict[key] = row_dict[key]
+        #     filtered_dict[key] = row_dict[key]
 
-        # Index the value from row_dict that corresponds to the main key column as the filtered_dict
-        indexed_csv[row_dict[main_key]] = filtered_dict
+        # Index value from row_dict that corresponds to the main key column as the filtered_dict
+        indexed_csv[main_key_value] = filtered_dict
 
     return indexed_csv
