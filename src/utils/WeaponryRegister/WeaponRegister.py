@@ -9,3 +9,9 @@ class Weapon:
         self.name = name
         self.weapon_type = weapon_type
         self.danger_level = danger_level
+    
+    def get_as_dict(self):
+        dictionary = {}
+        dictionary["name"] = self.name
+        dictionary["weapon_type"] = self.weapon_type
+        dictionary["danger_level"] = self.danger_level
