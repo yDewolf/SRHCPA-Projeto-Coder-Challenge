@@ -15,3 +15,5 @@ class Weapon:
         dictionary["name"] = self.name
         dictionary["weapon_type"] = self.weapon_type
         dictionary["danger_level"] = self.danger_level
+
+        return dictionary

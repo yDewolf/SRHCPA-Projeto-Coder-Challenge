@@ -28,10 +28,10 @@ class Ship:
         self.gas = gas
         self.crew = crew
         self.crew_state = crew_state
-        self.damage = damage 
+        self.damage = damage
 
 
-    def get_size(self):
+    def get_size_as_str(self):
         if self.size > 1 and self.size <= 5:
             return "Pequena"
         
@@ -46,8 +46,8 @@ class Ship:
         
         if self.size > 50 and self.size <= 100:
             return "Colossal"
-        
-    def damage_applied(self):
+    
+    def get_damage_as_str(self):
         if self.damage == 0:
             return "Sem avarias"
         
@@ -63,7 +63,7 @@ class Ship:
         if self.damage == 4:
             return "Perda Total"
         
-        
+    
     def get_as_dict(self):
         dictionary = {}
 
@@ -77,3 +77,4 @@ class Ship:
         dictionary["weapons"] = self.weapons
         dictionary["danger"] = self.danger
         
+        return dictionary

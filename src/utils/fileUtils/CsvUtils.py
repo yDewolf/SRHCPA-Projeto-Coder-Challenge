@@ -1,6 +1,6 @@
 # CSV file reader
 import os
-import FileReader
+import utils.fileUtils.FileUtils as FileUtils
 
 # Function for saving a dictionary (that has other dictionaries in it) as a csv file
 def save_dict_as_csv(file_path: str, dictionary: dict, main_key: str, header: list[str], overwrite: bool = False):
@@ -33,7 +33,7 @@ def save_dict_as_csv(file_path: str, dictionary: dict, main_key: str, header: li
         if idx < len(dictionary) - 1:
             csv_lines += "\n"
     
-    FileReader.save_file(file_path, csv_lines, overwrite)
+    FileUtils.save_file(file_path, csv_lines, overwrite)
     return csv_lines
 
 def save_rows_as_csv(file_path: str, rows_list: list[dict], header: list[str], overwrite: bool = False):
@@ -57,12 +57,12 @@ def save_rows_as_csv(file_path: str, rows_list: list[dict], header: list[str], o
         if idx < len(rows_list) - 1:
             csv_lines += "\n"
     
-    FileReader.save_file(file_path, csv_lines, overwrite)
+    FileUtils.save_file(file_path, csv_lines, overwrite)
     return csv_lines
 
 
 def get_csv_rows(file_path: str, header: list[str] = [], separator: str = ",") -> list[dict]:
-    file_lines = FileReader.get_file_lines(file_path)
+    file_lines = FileUtils.get_file_lines(file_path)
     
     # Get header from file if a header wasn't inputted
     if len(header) == 0:
@@ -81,7 +81,7 @@ def get_csv_rows(file_path: str, header: list[str] = [], separator: str = ",") -
         line_dict = {}
         for column_idx, headerKey in enumerate(header):
             # Header key = respective value in this line
-            line_dict[headerKey] = FileReader.parse_string_value(splitted_line[column_idx])
+            line_dict[headerKey] = FileUtils.parse_string_value(splitted_line[column_idx])
         
         csv_rows.append(line_dict)
     
@@ -109,7 +109,7 @@ def get_csv_values_with_key(file_path: str, header: list[str] = [], main_key: st
 def dict_to_csv(dictionary: dict, header: list[str]) -> str:
     csv_str = ""
     for idx, header_key in enumerate(header):
-        value_str = FileReader.stringify_value(dictionary[header_key])
+        value_str = FileUtils.stringify_value(dictionary[header_key])
         csv_str += value_str
 
         if idx < len(header) - 1:

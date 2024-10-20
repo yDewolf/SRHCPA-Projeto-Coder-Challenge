@@ -1,12 +1,10 @@
 # Ship registration utils
-import fileUtils.FileReader as FileReader
-from fileUtils.CsvReader import dict_to_csv
+import utils.fileUtils.FileUtils as FileUtils
+from utils.fileUtils.CsvUtils import dict_to_csv
 from Ship import Ship
 
-parameters = {}
-
 def register_ship(parameters_dict: dict, session):
-    new_ship = Ship(parameters["size"],
+    new_ship = Ship(parameters_dict["size"],
                     parameters_dict["color"],
                     parameters_dict["location"],
                     parameters_dict["gas"],
@@ -17,8 +15,6 @@ def register_ship(parameters_dict: dict, session):
     
     # Save on database
     
-    FileReader.save_file(session.cache["ship_data_path"], dict_to_csv(parameters_dict))
+    FileUtils.save_file(session.cache["ship_data_path"], "\n" + dict_to_csv(parameters_dict), overwrite=False)
 
     return new_ship
-
-ship = register_ship(parameters)

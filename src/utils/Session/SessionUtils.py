@@ -1,8 +1,8 @@
-import fileUtils.CsvReader as CsvReader
+import utils.fileUtils.CsvUtils as CsvUtils
 from Session import Session
 
 def create_account(account_login: str, password, users_path: str):
-    users = CsvReader.get_csv_values_with_key(users_path, main_key="login")
+    users = CsvUtils.get_csv_values_with_key(users_path, main_key="login")
     user_data = {}
 
     if users.__contains__(account_login):
@@ -15,7 +15,7 @@ def create_account(account_login: str, password, users_path: str):
     return user_data
 
 def log_in(account_login: str, password: str, users_path: str) -> dict:
-    users = CsvReader.get_csv_values_with_key(users_path, main_key="login")
+    users = CsvUtils.get_csv_values_with_key(users_path, main_key="login")
     user_data = {}
 
     if not users.__contains__(account_login):
