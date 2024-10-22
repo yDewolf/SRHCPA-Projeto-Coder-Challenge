@@ -9,9 +9,10 @@ class MenuOption:
     # Runs this callable to check if this option should be visible or not
     # Receives Menu Handler as a parameter
     visibiltity_condition: callable = None
+    inverse_condition: bool = False
 
 
-    def __init__(self, option_value, name: str = "", visibility_condition: callable = None):
+    def __init__(self, option_value, name: str = "", visibility_condition: callable = None, inverse_condition: bool = False):
         if name == "":
             if type(option_value) is Menu:
                 name = f"Go to {option_value.title}"
@@ -22,6 +23,7 @@ class MenuOption:
         
         if visibility_condition != None:
             self.add_visibiltiy_condition(visibility_condition)
+            self.inverse_condition = inverse_condition
 
         self.option_value = option_value
         self.name = name
@@ -98,7 +100,11 @@ class Menu:
 
         for option in self.options:
             if option.has_visibility_condition:
-                if not option.visibiltity_condition(self.menu_handler):
+                condition_match = option.visibiltity_condition(self.menu_handler)
+                if option.inverse_condition:
+                    condition_match = not condition_match
+
+                if not condition_match:
                     continue
             
             available_options.append(option)
@@ -242,6 +248,21 @@ def _get_deep_menus(menu: Menu) -> list[Menu]:
 
     return menus
 
+def bool_input_value(input_text: str):
+    value = -1
+    while value != 0 or value != 1:
+        print("[1]-Yes\n[0]-No")
+        value = input(input_text)
+        if not value.isnumeric(): value = -1
+        value = int(value)
+
+        if value == 0 or value == 1:
+            break
+
+        # Print Warning
+        print("WARNING: Invalid option!")
+
+    return bool(value)
 
 # Example usage:
 #test_menu3 = Menu(3, "Test menu 3", [MenuOption(lambda: print("This is a test function from test menu 3"), "Run a lambda function")])

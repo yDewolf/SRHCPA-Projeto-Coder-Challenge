@@ -1,5 +1,5 @@
-default_users_path = "data\users.csv"
-default_ships_path = "data\ships.csv"
+default_users_path = "data/users.csv"
+default_ships_path = "data/ships.csv"
 default_weaponry_path = "data/weaponry.csv"
 
 def create_cache() -> dict:
