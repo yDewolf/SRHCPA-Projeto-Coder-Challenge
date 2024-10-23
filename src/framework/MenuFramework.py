@@ -137,19 +137,7 @@ class Menu:
         
         max_option: int = len(available_options)
         
-        selected_option = -1
-        while selected_option < min_option or selected_option > max_option:
-            selected_option = input(self.select_option_text)
-
-            if not selected_option.isnumeric(): selected_option = -1
-
-            selected_option = int(selected_option)
-            # Valid option selected
-            if not selected_option < min_option and not selected_option > max_option:
-                break
-            
-            # Print warning
-            print("WARNING: Invalid option!")
+        selected_option = range_input_value(min_option, max_option, self.select_option_text)
         
         if selected_option == 0:
             return False
@@ -248,21 +236,45 @@ def _get_deep_menus(menu: Menu) -> list[Menu]:
 
     return menus
 
-def bool_input_value(input_text: str):
+
+def range_input_value(min_value: int, max_value: int, input_text: str):
     value = -1
-    while value != 0 or value != 1:
-        print("[1]-Yes\n[0]-No")
+    while value <= min_value or value >= max_value:
         value = input(input_text)
-        if not value.isnumeric(): value = -1
+        if not value.isnumeric(): value = min_value - 1
         value = int(value)
 
-        if value == 0 or value == 1:
+        if not value <= min_value or not value >= max_value:
             break
-
+            
         # Print Warning
         print("WARNING: Invalid option!")
+    
+    return value
+
+def bool_input_value(input_text: str):
+    #value = -1
+    #print("[1]-Yes\n[0]-No")
+    value = range_input_value(0, 1, input_text + "\n[1]-Yes\n[0]-No\n")
 
     return bool(value)
+
+def list_input_value(valid_values: list[int], input_text: str, invalid_value: int = -1):
+    value = invalid_value
+
+    while not valid_values.__contains__(value):
+        value = input(input_text)
+        if not value.replace("-","").isnumeric(): value = invalid_value
+        value = int(value)
+
+        if valid_values.__contains__(value):
+            break
+            
+        # Print Warning
+        print("WARNING: Invalid option!")
+    
+    return value
+
 
 # Example usage:
 #test_menu3 = Menu(3, "Test menu 3", [MenuOption(lambda: print("This is a test function from test menu 3"), "Run a lambda function")])

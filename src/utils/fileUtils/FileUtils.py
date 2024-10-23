@@ -31,9 +31,11 @@ def get_file_lines(file_path: str) -> list:
 # Custom parsing function to properly assign types from strings
 def parse_string_value(value: str):
     # If value is enclosed by ''
-    if value.startswith("'") and value.endswith("'"):
+    print(value)
+    if value.__contains__("'"):
+    #if value.startswith("'") and value.endswith("'"):
         # Return the same value but without the ''
-        return value.replace("'", "")
+        return value.replace("'", "").replace(";", ",")
 
     # If value is enclosed by []
     if value.startswith("[") and value.endswith("]"):
@@ -50,19 +52,20 @@ def parse_string_value(value: str):
     return int(value)
 
 # Custom stringifying function to properly format values to string
-def stringify_value(value):
+def stringify_value(value, inside_list: bool = False):
     if type(value) is list:
         stringified_list = []
         for val in value:
-            stringified_list.append(stringify_value(val))
+            stringified_list.append(stringify_value(val, True))
         
         list_str = str(stringified_list)
         list_str = list_str.replace(",", ";")
         return list_str
     
     if type(value) is str:
-        return "'" + value + "'"
+        return ("'" + value + "'").replace(",", ";")
+
+    if inside_list:
+        return value
     
     return str(value)
-
-

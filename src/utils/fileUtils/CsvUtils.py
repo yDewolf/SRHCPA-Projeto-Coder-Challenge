@@ -4,7 +4,7 @@ import utils.fileUtils.FileUtils as FileUtils
 #import FileUtils
 
 # Function for saving a dictionary (that has other dictionaries in it) as a csv file
-def save_dict_as_csv(file_path: str, dictionary: dict, main_key: str, header: list[str], overwrite: bool = False):
+def save_dict_as_csv(file_path: str, dictionary: dict, main_key: str, header: list[str] = [], overwrite: bool = False):
     if not os.path.isfile(file_path):
         # Push warning
         print(f"WARNING: Provided path doesn't lead to a file, a new file will be created | path: {file_path}")
@@ -37,7 +37,7 @@ def save_dict_as_csv(file_path: str, dictionary: dict, main_key: str, header: li
     FileUtils.save_file(file_path, csv_lines, overwrite)
     return csv_lines
 
-def save_rows_as_csv(file_path: str, rows_list: list[dict], header: list[str], overwrite: bool = False):
+def save_rows_as_csv(file_path: str, rows_list: list[dict], header: list[str] = [], overwrite: bool = False):
     if not os.path.isfile(file_path):
         # Push warning
         print(f"WARNING: Provided path doesn't lead to a file, a new file will be created | path: {file_path}")
