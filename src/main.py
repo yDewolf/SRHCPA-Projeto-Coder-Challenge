@@ -3,8 +3,8 @@ from utils.Session.Session import Session
 from framework.MenuFramework import MenuHandler, Menu, MenuOption, bool_input_value, range_input_value, list_input_value
 from utils.fileUtils.CsvUtils import get_formatted_csv
 import utils.Session.SessionUtils as SessionUtils
-import utils.WeaponryRegister.WeaponRegister as WeaponryRegister
-import utils.ShipRegister.ShipRegister as ShipRegister
+import utils.WeaponRegister as WeaponryRegister
+import utils.ShipRegister as ShipRegister
 
 current_session = Session()
 
