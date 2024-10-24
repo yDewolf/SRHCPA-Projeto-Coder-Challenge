@@ -31,7 +31,7 @@ def get_file_lines(file_path: str) -> list:
 # Custom parsing function to properly assign types from strings
 def parse_string_value(value: str):
     # If value is enclosed by ''
-    print(value)
+    #print(value)
     if value.__contains__("'"):
     #if value.startswith("'") and value.endswith("'"):
         # Return the same value but without the ''

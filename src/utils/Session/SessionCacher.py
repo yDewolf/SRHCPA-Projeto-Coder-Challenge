@@ -2,6 +2,7 @@ default_users_path = "data/users.csv"
 default_ships_path = "data/ships.csv"
 default_ship_models_path = "data/ship_models.csv"
 default_weaponry_path = "data/weaponry.csv"
+default_keys_path = "data/valid_keys.csv"
 
 def create_cache() -> dict:
     cache = {}
@@ -10,5 +11,6 @@ def create_cache() -> dict:
     cache["ships_path"] = default_ships_path
     cache["ship_models_path"] = default_ship_models_path
     cache["weaponry_path"] = default_weaponry_path
+    cache["keys_path"] = default_keys_path
 
     return cache

@@ -1,13 +1,13 @@
 # Main implementation
 from utils.Session.Session import Session
-from framework.MenuFramework import MenuHandler, Menu, MenuOption, bool_input_value, range_input_value, list_input_value
+from framework.MenuFramework import MenuHandler, Menu, MenuOption, bool_input_value, range_input_value, list_input_value, push_warning, print_colored
 from utils.fileUtils.CsvUtils import get_formatted_csv
 import utils.Session.SessionUtils as SessionUtils
 import utils.WeaponRegister as WeaponryRegister
 import utils.ShipRegister as ShipRegister
+import utils.KeyUtils as KeyUtils
 
 current_session = Session()
-
 
 # Menu conditions
 
@@ -28,6 +28,7 @@ def view_database_permission_level(menu_handler: MenuHandler):
 
 def signout_account_option():
     current_session.sign_out()
+    print_colored("Signed out from account successfully!", "green")
 
 def login_account_option():
     try_again: bool = True
@@ -38,11 +39,12 @@ def login_account_option():
         user_data = SessionUtils.log_in(login, password, current_session.cache["users_path"])
         if user_data != {}:
             current_session.log_in(user_data)
+            print_colored("Logged into account successfully!", "green")
             try_again = False
             break
         
         # Push warning:
-        print("WARNING: Invalid User or Incorrect password!")
+        push_warning("Invalid User or Incorrect password!")
         if not bool_input_value("Do you want to try again?"):
             break
 
@@ -52,13 +54,30 @@ def create_account_option():
         login = input("Insert an account login: ")
         password = input("Type the password: ")
 
-        user_data = SessionUtils.create_account(login, password, current_session.cache["users_path"])
+        # Forma óbviamente segura de se certificar que alguém tem uma chave de certificação
+        # Com certeza ninguém conseguiria modificar o valor de perm level 
+        # e criar uma conta com permissões que ela não devia ter
+        perm_level = 0
+        if bool_input_value("Do you have a certification key? "):
+            try_key_again = True
+            while try_key_again:
+                key = input("Insert your certification key: ")
+
+                perm_level = KeyUtils.check_registered_key(key, current_session.cache["keys_path"])
+                if perm_level > 0:
+                    break
+
+                if not bool_input_value("Do you want to try again? "):
+                    try_key_again = False
+                    break
+
+        user_data = SessionUtils.create_account(login, password, perm_level, current_session.cache["users_path"])
         if user_data != {}:
             current_session.log_in(user_data)
+            print_colored("Created account successfully!", "green")
             try_again = False
             break
         
-        # Push warning:
         if not bool_input_value("Do you want to try again? "):
             break
 
@@ -235,8 +254,6 @@ login_account = MenuOption(login_account_option, "Log in an Account", is_logged,
 signout_account = MenuOption(signout_account_option, "Sign out", is_logged)
 create_account = MenuOption(create_account_option, "Create an Account")
 
-#show_users_database = MenuOption(show_users_database, "Show Users Database")
-
 # Menu implementation
 
 
@@ -263,5 +280,20 @@ main_menu = Menu(0, "Main Menu", [
 ])
 main_menu.exit_option_text = "Quit"
 
+
 menu_handler = MenuHandler(main_menu)
+
+# Very simple way of showing the cool title
+
+print("  ___________________  ___ ___  ___________________  _____   ")
+print(" /   _____/\______   \/   |   \ \_   ___ \______   \/  _  \  ")
+print(" \_____  \  |       _/    ~    \/    \  \/|     ___/  /_\  \ ")
+print(" /        \ |    |   \    Y    /\     \___|    |  /    |    \ ")
+print("/_______  / |____|_  /\___|_  /  \______  /____|  \____|__  /")
+print("        \/         \/       \/          \/                \/ ")
+
+print_colored("\nWelcome to SRHCPA (Sistema de Recuperação Humana Contra Patos Alienígenas)\n", "cyan")
+print("Our objective is to register every ship from Alien Ducks and from us Humans")
+print("For that we will need your help to register every ship you find!")
+
 menu_handler.main_loop()

@@ -1,5 +1,6 @@
 # Ship registration utils
 import utils.fileUtils.CsvUtils as CsvUtils
+from framework.MenuFramework import push_warning, print_colored
 #from Ship import Ship
 
 class ShipModel:
@@ -133,7 +134,8 @@ def register_ship(ships_path: str, ship: Ship):
     ship_dict["id"] = id
 
     CsvUtils.save_rows_as_csv(ships_path, [ship_dict])
-    #FileUtils.save_file(ships_path, "\n" + CsvUtils.dict_to_csv(ship_dict), overwrite=False)
+    print_colored("Registered Ship Sucessfully!", "green")
+
 
 def register_ship_model(ship_models_path: str, ship_model: ShipModel):
     model_dict = ship_model.get_as_dict()
@@ -149,13 +151,14 @@ def register_ship_model(ship_models_path: str, ship_model: ShipModel):
     
     model_dict["id"] = id
     CsvUtils.save_rows_as_csv(ship_models_path, [model_dict])
+    print_colored("Registered Model Sucessfully!", "green")
 
 
 def _check_model_exists(ship_models_path: str, model_name: str):
     ship_models = CsvUtils.get_csv_values_with_key(ship_models_path, ["name"], "name")
     if ship_models.__contains__(model_name):
         # Push Warning:
-        print("WARNING: This ship model already exists!")
+        push_warning("This ship model already exists!")
         return True
     
     return False

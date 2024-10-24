@@ -1,4 +1,5 @@
 import utils.fileUtils.CsvUtils as CsvUtils
+from framework.MenuFramework import push_warning, print_colored
 
 # Armamentos: poderio bélico e tipo de armas, quando for o caso;
 
@@ -33,6 +34,8 @@ def register_weapon(weapons_path: str, weapon: Weapon):
         return
 
     CsvUtils.save_rows_as_csv(weapons_path, [weapon_dict], ["id", "name", "weapon_type", "danger_level"])
+    print_colored("Registered Weapon Sucessfully!", "green")
+
 
 def get_registered_weapons(weapons_path: str):
     weapons = CsvUtils.get_csv_values_with_key(weapons_path, ["id", "name", "weapon_type", "danger_level"], "id")
@@ -44,7 +47,7 @@ def _check_weapon_already_exists(weapons_path: str, weapon_name: str):
 
     if registered_weapons.__contains__(weapon_name):
         # Push Warning:
-        print("WARNING: This weapon was already registered!")
+        push_warning("This weapon was already registered!")
         return True
     
     return False
