@@ -37,10 +37,21 @@ def register_weapon(weapons_path: str, weapon: Weapon):
     print_colored("Registered Weapon Sucessfully!", "green")
 
 
-def get_registered_weapons(weapons_path: str):
-    weapons = CsvUtils.get_csv_values_with_key(weapons_path, ["id", "name", "weapon_type", "danger_level"], "id")
+def get_registered_weapons(weapons_path: str) -> list[int]:
+    weapons: list[int] = CsvUtils.get_csv_values_with_key(weapons_path, ["id", "name", "weapon_type", "danger_level"], "id")
 
     return weapons
+
+def get_weapon_objects(weapons_path: str) -> list[Weapon]:
+    weapons: list[Weapon] = []
+    registered_weapons = get_registered_weapons(weapons_path)
+    for weapon_id in registered_weapons:
+        weapon_dict = registered_weapons[weapon_id]
+        weapon = Weapon(weapon_dict["name"], weapon_dict["weapon_type"], weapon_dict["danger_level"])
+        weapons.append(weapon)
+    
+    return weapons
+
 
 def _check_weapon_already_exists(weapons_path: str, weapon_name: str):
     registered_weapons = CsvUtils.get_csv_values_with_key(weapons_path, ["name"], "name")

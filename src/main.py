@@ -7,10 +7,13 @@ import utils.WeaponRegister as WeaponryRegister
 import utils.ShipRegister as ShipRegister
 import utils.KeyUtils as KeyUtils
 
+from utils.ShipRegister import Ship
+from utils.ShipClassifier import classify_ship, calculate_ship_danger
+
+
 current_session = Session()
 
 # Menu conditions
-
 def is_logged(menu_handler: MenuHandler):
     menu_handler.global_variables["SessionLogged"] = current_session
     return current_session.logged_in
@@ -116,6 +119,7 @@ def register_ship_model():
     #id, name, description, size, color, weapons
     name: str = ""
     size: float = -1
+    material: str = ""
     color: str = ""
     weapons: list[int] = []
 
@@ -127,13 +131,17 @@ def register_ship_model():
         
         color = input("Color of the ship model: ")
         size = input("Size of the ship model (in Meters): ")
+        material = input("What material the ship model is (mostly) made of? ")
         weapons = _select_weapons()
         
         description = input("Give this ship model a brief description: ")
         
-        confirm = bool_input_value(f"Are you sure about the following informations? \nModel Name: {name}\nModel Description: {description}\nShip size: {size}\nShip color: {color}\nWeapon ids: {weapons}\n")
+        confirm = bool_input_value(f"Are you sure about the following informations? \nModel Name: {name}\nModel Description: {description}\nShip size: {size}\nMaterial: {material}\nShip color: {color}\nWeapon ids: {weapons}\n")
     
-    ship_model = ShipRegister.ShipModel(name, description, size, color, weapons)
+    ship_model = ShipRegister.ShipModel(name, description, size, material, color, weapons)
+    ship = Ship(size, material, color, "", -1, 0, "", 0, weapons)
+    ship_model.danger = calculate_ship_danger(ship, current_session.cache)
+
     ShipRegister.register_ship_model(current_session.cache["ship_models_path"], ship_model)
     
 
@@ -142,27 +150,32 @@ def register_ship():
 
     size: float = -1
     color: str = ""
+    material: str = ""
     weapons: list[int] = []
 
     confirm = False
     while not confirm:
-        color = input("Color of the ship model: ")
-        size = input("Size of the ship model (in Meters): ")
+        color = input("Color of the ship: ")
+        size = range_input_value(0, 65536,"Size of the ship (in Meters): ")
+        material = input("What material the ship was (mostly) made of? ")
+        
         weapons = _select_weapons()
 
-        confirm = bool_input_value(f"Are you sure about the following informations?\nShip size: {size}\nShip color: {color}\nWeapon ids: {weapons}\n")
+        confirm = bool_input_value(f"Are you sure about the following informations?\nShip size: {size}\nMaterial: {material}\nShip color: {color}\nWeapon ids: {weapons}\n")
     
     ship_info = _input_ship_info()
 
     ship = ShipRegister.Ship(size, 
+                             material,
                              color,
                              ship_info["fall_location"], 
                              ship_info["gas"], 
-                             ship_info["damage"], 
-                             ship_info["crew"],  
+                             ship_info["crew"],
                              ship_info["crew_state"],
+                             ship_info["damage"],
                              weapons)
-    
+    ship.danger = calculate_ship_danger(ship, current_session.cache)
+
     ShipRegister.register_ship(current_session.cache["ships_path"], ship)
 
 def register_ship_with_preset():
@@ -192,6 +205,8 @@ def register_ship_with_preset():
                                             ship_info["damage"],
                                             ship_info["crew"],
                                             ship_info["crew_state"])
+    ship.danger = calculate_ship_danger(ship, current_session.cache)
+
     ShipRegister.register_ship(current_session.cache["ships_path"], ship)
 
 
@@ -285,12 +300,12 @@ menu_handler = MenuHandler(main_menu)
 
 # Very simple way of showing the cool title
 
-print("  ___________________  ___ ___  ___________________  _____   ")
-print(" /   _____/\______   \/   |   \ \_   ___ \______   \/  _  \  ")
-print(" \_____  \  |       _/    ~    \/    \  \/|     ___/  /_\  \ ")
-print(" /        \ |    |   \    Y    /\     \___|    |  /    |    \ ")
-print("/_______  / |____|_  /\___|_  /  \______  /____|  \____|__  /")
-print("        \/         \/       \/          \/                \/ ")
+print('  ___________________  ___ ___  ___________________  _____   ')
+print(' /   _____/\______   \/   |   \ \_   ___ \______   \/  _  \  ')
+print(' \_____  \  |       _/    ~    \/    \  \/|     ___/  /_\  \ ')
+print(' /        \ |    |   \    Y    /\     \___|    |  /    |    \ ')
+print('/_______  / |____|_  /\___|_  /  \______  /____|  \____|__  /')
+print('        \/         \/       \/          \/                \/ ')
 
 print_colored("\nWelcome to SRHCPA (Sistema de Recuperação Humana Contra Patos Alienígenas)\n", "cyan")
 print("Our objective is to register every ship from Alien Ducks and from us Humans")

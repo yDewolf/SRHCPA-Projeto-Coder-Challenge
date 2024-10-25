@@ -7,16 +7,18 @@ class ShipModel:
     model_name: str
     description: str
 
+    material: str
     size: float
     color: str
 
     weapons: list[int]
     danger: int = -1
 
-    def __init__(self, model_name: str, description: str, size: float, color: str, weapons: list[int]):
+    def __init__(self, model_name: str, description: str, size: float, material: str, color: str, weapons: list[int]):
         self.model_name = model_name.lower()
         self.description = description
         self.size = size
+        self.material = material
         self.color = color
         self.weapons = weapons
 
@@ -25,6 +27,7 @@ class ShipModel:
         dictionary["name"] = self.model_name
         dictionary["description"] = self.description
         dictionary["size"] = self.size
+        dictionary["material"] = self.material
         dictionary["color"] = self.color
         dictionary["weapons"] = self.weapons
         dictionary["danger"] = self.danger
@@ -33,6 +36,8 @@ class ShipModel:
 
 class Ship:
     size: float
+    material: str
+
     color: str
     fall_location: str
     weapons: list[int]
@@ -44,8 +49,9 @@ class Ship:
 
     model_id: int
 
-    def __init__(self, size: float, color: str, fall_location: str, gas: float, crew: int, crew_state: str, damage: int, weapons: list[int], model_id: int = -1) -> None:
+    def __init__(self, size: float, material: str, color: str, fall_location: str, gas: float, crew: int, crew_state: str, damage: int, weapons: list[int], model_id: int = -1) -> None:
         self.size = size
+        self.material = material
         self.color = color
         self.fall_location = fall_location
         self.gas = gas
@@ -91,8 +97,8 @@ class Ship:
     
     def get_as_dict(self):
         dictionary = {}
-
         dictionary["size"] = self.size
+        dictionary["material"] = self.material     
         dictionary["color"] = self.color
         dictionary["fall_location"] = self.fall_location
         dictionary["gas"] = self.gas
@@ -106,10 +112,11 @@ class Ship:
 
 
 def ship_from_ship_model(models_path: str, model_id: int, fall_location: str, gas: float, damage: int, crew: int, crew_state: str):
-    ship_model = CsvUtils.get_csv_values_with_key(models_path, ["id", "name", "size", "color", "weapons"], "id")[model_id]
+    ship_model = CsvUtils.get_csv_values_with_key(models_path, ["id", "name", "size", "material", "color", "weapons"], "id")[model_id]
     
     ship = Ship(
         ship_model["size"],
+        ship_model["material"],
         ship_model["color"],
         fall_location,
         gas,

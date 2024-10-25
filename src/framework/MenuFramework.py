@@ -238,7 +238,7 @@ def _get_deep_menus(menu: Menu) -> list[Menu]:
 
 
 def range_input_value(min_value: int, max_value: int, input_text: str):
-    value = -1
+    value: int = -1
     while value <= min_value or value >= max_value:
         value = input(input_text)
         if not value.isnumeric(): value = min_value - 1
@@ -250,7 +250,7 @@ def range_input_value(min_value: int, max_value: int, input_text: str):
         # Print Warning
         print("WARNING: Invalid option!")
     
-    return value
+    return int(value)
 
 def bool_input_value(input_text: str):
     #value = -1

@@ -1,2 +1,3 @@
 id,size,color,fall_location,weapons,gas,crew,crew_state,damage,danger
-0,50,'Yellow','Bravidis 3B - Large Puddle',[-2],-1.0,0,'Dead',93,-1
+0,50,'Yellow','Bravidis 3B - Large Puddle',[-1],-1.0,0,'Dead',93,0
+1,250,'Red','Unknown',[0],25.0,150,'Unknown',4,5
