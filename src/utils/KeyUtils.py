@@ -64,9 +64,10 @@ def check_registered_key(key: str, keys_path: str) -> int:
     perm_level: int = 0
 
     keys = CsvUtils.get_csv_values_with_key(keys_path, ["key", "perm_level"], "key")
-    
-    if keys.__contains__(key):
-        perm_level = keys[key]["perm_level"]
+    encrypted_key = encrypt_key(key)
+
+    if keys.__contains__(encrypted_key):
+        perm_level = keys[encrypted_key]["perm_level"]
         print(f"Valid key with perm level: {perm_level}")
     else:
         # Push Warning:

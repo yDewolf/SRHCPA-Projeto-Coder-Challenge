@@ -7,7 +7,7 @@ def create_account(account_login: str, password: str, perm_level: int, users_pat
     users = CsvUtils.get_csv_values_with_key(users_path, main_key="login")
     user_data = {}
 
-    if _check_user_exists(account_login, users, push_warning=False):
+    if _check_user_exists(account_login, users, warn=False):
         # Push Warning:
         push_warning("This user is already registered")
         return user_data
